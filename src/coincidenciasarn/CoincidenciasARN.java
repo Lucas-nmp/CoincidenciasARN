@@ -1,9 +1,12 @@
 package coincidenciasarn;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +33,7 @@ public class CoincidenciasARN {
          
          
          try {
-            String ruta = "Cadena de ARN.txt";
+            String ruta = "Cadenas de ARN.txt";
             File file = new File(ruta);
             if(!file.exists()){
                 file.createNewFile();
@@ -63,14 +66,45 @@ public class CoincidenciasARN {
         return set;
     }
     
+    public void leerTXT() {
+        
+        File archivo;
+        FileReader fr = null;
+        BufferedReader br;
+        
+        try {
+            archivo = new File("Cadenas de ARN.txt");
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+            
+            String linea;
+            paraInsertar = new ArrayList<>();
+            while((linea=br.readLine())!=null) {
+                paraInsertar.add(linea);
+            
+        }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (null != fr){
+                    fr.close();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
     
-   
-    
-
     
     public static void main(String[] args) {
         CoincidenciasARN arn = new CoincidenciasARN();
         arn.crearLlenarTXT();
+        arn.leerTXT();
+        Set<String> duplicados = buscarDuplicados(paraInsertar);
+        System.out.println(duplicados); // imprime por consola los ARN duplicados en el TXT, es mejor crear otro archivo con los resultados
+        
         
     }
     
