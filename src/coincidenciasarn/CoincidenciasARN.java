@@ -4,6 +4,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Programa para la búsqueda de cadenas de ARN iguales en un archivo TXT proporcionado. 
@@ -16,10 +20,10 @@ import java.io.IOException;
  */
 public class CoincidenciasARN {
     
+    static List <String> paraInsertar;
     
     
-    
-    public void crearYllenarTXT() {
+    public void crearLlenarTXT() {
         
          String letrasPermitidas[] = {"A", "C", "G", "U"};
          String ARN = "", escribir = "";
@@ -33,7 +37,7 @@ public class CoincidenciasARN {
             }
              FileWriter fw = new FileWriter(file);
              try (BufferedWriter bw = new BufferedWriter(fw)) {
-                 for(int i=0; i<10; i++){
+                 for(int i=0; i<1000; i++){
                      for(int x=0; x<12; x++) {
                          ARN += letrasPermitidas[(int) Math.floor(Math.random()*3)];
                      }
@@ -45,9 +49,18 @@ public class CoincidenciasARN {
             
             
         } catch (IOException e) {
+        } 
+    }
+    
+    private static <Tipo>Set<Tipo> buscarDuplicados(List<Tipo> list) {
+        
+        Set <Tipo> set = new HashSet<>();
+        for (Tipo i : list) {
+            if (Collections.frequency(list, i)>1) {
+                set.add(i);
+            }
         }
-        
-        
+        return set;
     }
     
     
@@ -57,7 +70,7 @@ public class CoincidenciasARN {
     
     public static void main(String[] args) {
         CoincidenciasARN arn = new CoincidenciasARN();
-        arn.crearYllenarTXT();
+        arn.crearLlenarTXT();
         
     }
     
